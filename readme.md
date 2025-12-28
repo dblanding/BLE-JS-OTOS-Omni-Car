@@ -12,12 +12,12 @@ This project builds on the use of a 3-axis joystick to control a mobile robot ca
 Some other differences between the Mecanum wheel project and the onmi-wheel project were:
 * Used Pico-W modules communicating via built-in BLE capability, instead of Arduinos.
 * Driver station sends raw joystick data as 3 comma separated joystick values in range from -127 to +127. Wheel speeds are computed on the robot.
-* The Mecanum wheel project was a modidfication of a purchased kit, so I made only minimal cahnges. For example, I used the motor driver h/w and s/w that came with the kit. 
+* The Mecanum wheel project was a modification of a purchased kit, so I made only minimal changes. For example, I used the motor driver h/w and s/w that came with the kit. 
 
 ## Coordinate frames: Local vs. Global
-Regardless of whether Mecanum wheels or Omni wheels are used to enable Holonomic Motion, the driver who operates the joystick is likely to be in a fixed location while the robot will be moving about within a *field* or arena. The robot's *Local* frame of refeference will be constantly moving with respect to the *Global* frame of reference of the arena or field.
+Regardless of whether Mecanum wheels or Omni wheels are used to enable Holonomic Motion, the driver who operates the joystick is likely to be in a fixed location while the robot will be moving about within a *field* or arena. The robot's *Local* frame of reference will be constantly moving with respect to the *Global* frame of reference of the arena or field.
 
-In both of the above projects, the joystick control has operated as if the driver is seated on the robot. Whatever direction the joysick moves, the robot will move in the corresponing direction. This is called by various names, such as *First-Person View* or *Robot-Centric Control*.
+In both of the above projects, the joystick control has operated as if the driver is seated on the robot. Whatever direction the joysick moves, the robot will move in the corresponding direction. This is called by various names, such as *First-Person View* or *Robot-Centric Control*.
 
 However, the driver is **not** actually seated on the robot, but is stationary w/r/t the field. So to make the driving task much easier, a *Field-Centric Control* can be used, in which moving the stick forward causes the robot to move away from the wall where the driver is located, irrespective of the robot's angular orientation. A robot, aware of its instantaneous pose angle (**θz**), can easily convert from its local coordinate frame to its global coordinate frame.
 
@@ -39,7 +39,7 @@ However, the driver is **not** actually seated on the robot, but is stationary w
 
 ![L298N Image](https://github.com/dblanding/Pico-MicroPython-smart-car/raw/main/imgs/L298N-pinout.jpg)
 
-* Use a LiPo (~12V) battery onboard the robot (as done in the [Pico MicroPython Smart Car](https://github.com/dblanding/Pico-MicroPython-smart-car) project).
+* Use a LiPo (~12V) battery onboard the robot as was done toward the end of the [Pico MicroPython Smart Car](https://github.com/dblanding/Pico-MicroPython-smart-car) project.
     * Battery supplies 12V to both L298N boards
     * 5V from one of the boards supplies power to the Pico VSYS pin (39)
     * 3.3V (for the OTOS board) comes from the Pico 3V3 pin (37)
