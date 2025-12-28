@@ -44,9 +44,8 @@ However, the driver is **not** actually seated on the robot, but is stationary w
     * 5V from one of the boards supplies power to the Pico VSYS pin (39)
     * 3.3V (for the OTOS board) comes from the Pico 3V3 pin (37)
 
-
-
+## Teleop driving
+With **Field-Centric Control**, even a novice can drive the car so that it spins on its axis while driving in any direction.
 
 https://github.com/user-attachments/assets/ad237c95-bbda-4d98-8ddb-20915f91a6c0
-
 
