@@ -17,11 +17,11 @@ Some other differences between the Mecanum wheel project and the onmi-wheel proj
 ## Coordinate frames: Local vs. Global
 Regardless of whether Mecanum wheels or Omni wheels are used to enable Holonomic Motion, the driver who operates the joystick is likely to be in a fixed location while the robot will be moving about within a *field* or arena. The robot's *Local* frame of refeference will be constantly moving with respect to the *Global* frame of reference of the arena or field.
 
-In both of the above projects, it has been a goal to have the motion of the robot correlate with the motion of the joystick, as if the driver is seated on the robot. Whatever direction the joysick moves, the robot will move in the corresponing direction.
+In both of the above projects, the joystick control has operated as if the driver is seated on the robot. Whatever direction the joysick moves, the robot will move in the corresponing direction. This is called by various names, such as *First-Person View* or *Robot-Centric Control*.
 
-But since the driver is **not** actually seated on the robot, it will be important for the robot to be aware of its instantaneous pose angle (**θz**) so that it can translate the joystick's globally fixed X, Y coordinates to the robot's local X, Y coordinates.
+However, the driver is **not** actually seated on the robot, but is stationary w/r/t the field. So to make the driving task much easier, a *Field-Centric Control* can be used, in which moving the stick forward causes the robot to move away from the wall where the driver is located, irrespective of the robot's angular orientation. A robot, aware of its instantaneous pose angle (**θz**), can easily convert from its local coordinate frame to its global coordinate frame.
 
-> The main goal of this project is to measure the robot's instantaneous pose angle using an Optical Tracking Odometry Sensor (as used in the [PicoBot-OTO](https://github.com/dblanding/PicoBot-oto) project), and use that pose data to allow the joystick to operate with respect to the global coordinates of the field.
+**The main goal of this project is to implement driver control in a *Field-Centric* (Bird's-Eye View) mode** using the pose angle from an Optical Tracking Odometry Sensor (as used in the [PicoBot-OTO](https://github.com/dblanding/PicoBot-oto) project).
 
 * The Sparkfun Optical Tracking Odometry Sensor is hooked up using the 4-wire qwiic system
     * Here's the color code used by the Qwiic system:
@@ -33,14 +33,14 @@ But since the driver is **not** actually seated on the robot, it will be importa
         * SDA to GPIO 16
         * SCL to GPIO 17
 
-Other goals of this project:
+## Other project choices:
 * Use a pair of Pico-W modules onboard the driver station and robot, communicating via built-in BLE (as done in the [Adeept Mecanum wheel project](https://github.com/dblanding/BLE-Joystick-Controlled-Mecanum-Car) project).
-* Interface the Pico on the robot to the 4 motors using two L298N modules
-
-#### Notes on using L298N boards
-The figures below are from [an old project](https://github.com/dblanding/Pico-MicroPython-smart-car) in which I used the L298N board.
+* Although I dabbled with using a [Waveshare DC Motor Driver Module for Raspberry Pi Pico](https://www.amazon.com/dp/B09D7MDL2C?ref=ppx_yo2ov_dt_b_fed_asin_title) to drive the robot's 4 motors, I ended up using two L298N modules instead.
 
 ![L298N Image](https://github.com/dblanding/Pico-MicroPython-smart-car/raw/main/imgs/L298N-pinout.jpg)
-![fritzing diagram](https://github.com/dblanding/Pico-MicroPython-smart-car/blob/main/imgs/pico-car_bb.png?raw=true)
 
+* Use a LiPo (~12V) battery onboard the robot (as done in the [Pico MicroPython Smart Car](https://github.com/dblanding/Pico-MicroPython-smart-car) project).
+    * Battery supplies 12V to both L298N boards
+    * 5V from one of the boards supplies power to the Pico VSYS pin (39)
+    * 3.3V (for the OTOS board) comes from the Pico 3V3 pin (37)
 

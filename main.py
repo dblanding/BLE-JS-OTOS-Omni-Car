@@ -96,7 +96,12 @@ from pca9685 import PCA9685
 from geom2d import r2p, p2r
 from mtr import mtr1, mtr2, mtr3, mtr4
 
-# setup onboard LED
+# Set teleop mode to either:
+# 'FPV' for First-Person View or
+# 'BEV' for Bird's-Eye View
+TELEOP_MODE = 'BEV'
+
+# Setup onboard LED
 led = Pin("LED", Pin.OUT, value=0)
 
 ###################################
@@ -108,7 +113,7 @@ led = Pin("LED", Pin.OUT, value=0)
 # Initialize I2C1 using qwiic library
 i2c0 = qwiic_i2c.get_i2c_driver(sda=16, scl=17, freq=100000)
 
-# set up OTOS on i2c0
+# Set up OTOS on i2c0
 myOtos = qwiic_otos.QwiicOTOS(23, i2c0)
 print("\nSetting up OTOS\n")
 
@@ -214,14 +219,19 @@ async def main():
 
             while True:
                 try:
+                    pose_x, pose_y, pose_z = get_pose()
                     js_vals = decode(await ble_characteristic.read())
                     print(f"Joystick Values: {js_vals}")
                     x, y, z = js_vals
                     
                     # convert x,y coords to polar
                     r, t = r2p(x, y)
-                    # rotate fwd dir by 45 deg and convert back to rect
-                    x, y = p2r(r, t - pi/4)
+                    if TELEOP_MODE == 'BEV':
+                        ROTATE_ANGLE = pi/4 + pose_z
+                    else:
+                        ROTATE_ANGLE = pi/4
+                    # calculate new fwd dir and convert back to rect
+                    x, y = p2r(r, t - ROTATE_ANGLE)
                     
                     # combine joystick thetaZ to get raw spd for motors
                     s1 = int(x + z/2)
@@ -241,8 +251,6 @@ async def main():
                     mtr2.drive(s2)
                     mtr1.drive(s1)
                     
-                    pose = get_pose()
-                    print(f"Pose Values: {pose}")
                     led.toggle()
                     await asyncio.sleep(0.1)
                 except Exception as e:
