@@ -42,7 +42,7 @@ However, the driver is **not** actually seated on the robot, but is stationary w
 * Use a LiPo (~12V) battery onboard the robot as was done toward the end of the [Pico MicroPython Smart Car](https://github.com/dblanding/Pico-MicroPython-smart-car) project.
     * Battery supplies 12V to both L298N boards
     * 5V from one of the boards supplies power to the Pico VSYS pin (39)
-    * 3.3V (for the OTOS board) comes from the Pico 3V3 pin (37)
+    * 3.3V (for the OTOS board) comes from the Pico 3V3 pin (36)
 
 ## Teleop driving
 With **Field-Centric Control**, even a novice can drive the car so that it spins on its axis while driving in any direction.
